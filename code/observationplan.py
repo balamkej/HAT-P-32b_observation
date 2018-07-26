@@ -13,12 +13,14 @@ longitude = '-111d10m5.43s'
 elevation = 867.2962 * u.m
 location = EarthLocation.from_geodetic(longitude, latitude, elevation)
 
-# I used the data from the desert museum.
+# I used the data from the desert museum, which is close
+# close to our observation site. I average temp and humidity
+# measures for observation months.
 observer = Observer(name='BB/RH Tucson',
                 location=location,
                 pressure=0.91 * u.bar,
                 relative_humidity=0.25,
-                temperature=80.0 * u.deg_C,
+                temperature=20.0 * u.deg_C,
                 timezone=timezone('US/Mountain'),
                 description="Betsy Burr and Robert Henderson observation station in Tucson, AZ."
                 )
