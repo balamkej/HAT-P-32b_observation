@@ -26,13 +26,23 @@ observer = Observer(name='BB/RH Tucson',
                 relative_humidity=0.25,
                 temperature=20.0 * u.deg_C,
                 timezone=timezone('US/Mountain'),
-                description="Betsy Burr and Robert Henderson observation station in Tucson, AZ."
+                description='Betsy Burr and Robert Henderson observation
+                station in Tucson, AZ.'
                 )
 
 # Orbital data from explanetarchive.ipac.caltec.edu
-primary_eclipse_time = 2454942.898400 
+primary_eclipse_time = Time(2454942.898400, format='jd') 
 orbital_period = 2.150009 * u.day
-eclipse_duration = 3.1102
+eclipse_duration = 3.1102 * u.day
+
+HATP32b = EclipsingSystem(primary_eclipse_time=primary_eclipse_time,
+                orbital_period=orbital_period,
+                duration=eclipse_duration,
+                name='HAT-P-32b'
+                )
+
+n.transits = 169 # The number of transits per year
+obs_time = Time('2017-08-01 12:00')
 
 print(HATP32)
 print(observer)
