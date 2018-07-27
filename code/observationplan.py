@@ -1,8 +1,10 @@
 import astropy.units as u
+from astropy.time import Time
 from astropy.coordinates import SkyCoord
 from astropy.coordinates import EarthLocation
 from astroplan import FixedTarget
 from astroplan import Observer
+from astroplan import EclipsingSystem
 from pytz import timezone
 
 # Our target is an explante in HAT-P-32, a G or F-type dwarf star
@@ -26,5 +28,5 @@ observer = Observer(name='BB/RH Tucson',
                 description="Betsy Burr and Robert Henderson observation station in Tucson, AZ."
                 )
 
-#print(location)
-#print(observer)
+print(HATP32)
+print(observer)
