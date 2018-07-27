@@ -1,6 +1,7 @@
 import astropy.units as u
 import datetime as dt
 from astropy.time import Time
+from astropy.time import TimezoneInfo
 from astropy.coordinates import SkyCoord
 from astropy.coordinates import EarthLocation
 from astroplan import FixedTarget
@@ -10,7 +11,7 @@ from astroplan import is_event_observable
 from astroplan import PrimaryEclipseConstraint
 from astroplan import AtNightConstraint
 from astroplan import AltitudeConstraint
-from astroplan import LocalTimeConstraint
+from astroplan import TimeConstraint
 from pytz import timezone
 
 # Download updated bulletin table
@@ -54,12 +55,10 @@ n_transits = 169 # The number of transits per year
 observing_time = Time('2018-08-01 12:00')
 
 
-min_local_time = dt.time(20, 0)  # 20:00 local time (7pm)
-#max_local_time = dt.time(2, 0)  # 02:00 local time (2am)
+utc_minus_six_hour = TimezoneInfo(utc_offset=-6*u.hour)
 
-constraints = [AtNightConstraint.twilight_civil(),
-                # AltitudeConstraint(min=30*u.deg),
-                # LocalTimeConstraint(min=min_local_time)
+constraints = [AtNightConstraint.twilight_astronomical(),
+                AltitudeConstraint(min=30*u.deg),
                 ]
 
 ing_egr = HATP32b.next_primary_ingress_egress_time(observing_time, n_eclipses=n_transits)
@@ -71,3 +70,13 @@ candidates = []
 for i in range(len(hits[0])):
     if hits[0][i] == True:
         candidates.append(ing_egr[i])
+
+# Convert from Julian to ISO
+for i in candidates:
+    i.format = 'iso'
+
+f = open('observation_times.txt', 'w')
+f.write("Obervation times [Ingress Egress] --- UTC (MST is UTC - 6)\n")
+for i in candidates:
+    f.write("%s\n" % i.value)
+f.close()
