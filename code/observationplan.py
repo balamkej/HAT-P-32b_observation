@@ -15,7 +15,7 @@ from pytz import timezone
 
 # Download updated bulletin table
 from astroplan import download_IERS_A
-download_IERS_A()
+# download_IERS_A()
 
 # Our target is an explanet in HAT-P-32, a G or F-type dwarf star
 # 860 light years away with an apparent magnitude of 11.197
@@ -58,11 +58,16 @@ min_local_time = dt.time(20, 0)  # 20:00 local time (7pm)
 #max_local_time = dt.time(2, 0)  # 02:00 local time (2am)
 
 constraints = [AtNightConstraint.twilight_civil(),
-                AltitudeConstraint(min=30*u.deg),
-                #LocalTimeConstraint(min=min_local_time)
+                # AltitudeConstraint(min=30*u.deg),
+                # LocalTimeConstraint(min=min_local_time)
                 ]
 
 ing_egr = HATP32b.next_primary_ingress_egress_time(observing_time, n_eclipses=n_transits)
-print(ing_egr)
 
-print(is_event_observable(constraints, observer, HATP32, times_ingress_egress=ing_egr))
+hits = is_event_observable(constraints, observer, HATP32, times_ingress_egress=ing_egr)
+
+# Create a list of ingress-egress time objects matching constraints.
+candidates = []
+for i in range(len(hits[0])):
+    if hits[0][i] == True:
+        candidates.append(ing_egr[i])
